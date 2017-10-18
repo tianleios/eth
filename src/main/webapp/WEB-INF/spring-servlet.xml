@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:mvc="http://www.springframework.org/schema/mvc"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd"
+>
+
+    <mvc:annotation-driven/>
+
+
+    <!-- ############### 数据验证 ################## -->
+    <!--<mvc:annotation-driven  validator="validator" />-->
+    <!--<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">-->
+        <!--<property name="providerClass" value="org.hibernate.validator.HibernateValidator"/>-->
+    <!--</bean>-->
+
+    <!-- 全部扫描 也可以使用下面方式 单独扫描-->
+    <context:component-scan base-package="com.cdeth" annotation-config="true"/>
+
+    <!--controller-->
+    <context:component-scan base-package="com.cdeth.controller">
+    <context:include-filter
+    type="annotation"
+    expression="org.springframework.stereotype.Controller"
+    />
+    </context:component-scan>
+
+    <!--service-->
+    <context:component-scan base-package="com.cdeth.service">
+    <context:include-filter
+    type="annotation"
+    expression="org.springframework.stereotype.Service"
+    />
+    </context:component-scan>
+
+    <!--         12          -->
+    <context:annotation-config/>
+
+</beans>

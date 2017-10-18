@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为这个mapper指定一个唯一的namespace，namespace的值习惯上设置成包名+sql映射文件名，这样就能够保证namespace的值是唯一的 -->
+
+<mapper namespace="com.cdeth.dao.UserMapper">
+    <!-- 根据id查询得到一个user对象 -->
+    <resultMap type="com.cdeth.pojo.User" id="userMap">
+       <id property="id" column="id" />
+       <result property="mobile" column="mobile" />
+
+        <result property="address" column="address" />
+        <result property="ethPassword" column="eth_password"/>
+        <result property="password" column="password"/>
+
+        <result property="createDatetime" column="create_datetime"/>
+        <result property="updateDatetime" column="update_datetime"/>
+    </resultMap>
+
+    <sql id="userInfo">
+        id,mobile,password,create_datetime,update_datetime
+    </sql>
+
+    <insert id="insertUser" parameterType="com.cdeth.pojo.User">
+
+        INSERT INTO `user`(mobile,username,password,create_time,update_time) VALUES (
+               #{phone},#{username},#{password},#{createTime},#{updateTime}
+        )
+        ;
+    </insert>
+
+
+
+
+
+
+
+
+</mapper>
