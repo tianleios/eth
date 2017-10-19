@@ -34,6 +34,7 @@
         <!--<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />-->
     </bean>
 
+    <bean id="initBean" class="com.cdeth.common.InitBean"></bean>
     <!--<bean id="val" class="org.hibernate.validator.">-->
 
     <!-- 事务管理 -->
@@ -43,5 +44,8 @@
     <!--</bean>-->
 
     <!--<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>-->
+
+    <bean class="com.cdeth.common.InstantiationTracingBeanPostProcessor"/>
+
 
 </beans>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cdeth.dao.AccountMapper">
+
+
+        <!-- 根据id查询得到一个user对象 -->
+        <resultMap type="com.cdeth.pojo.Account" id="accountMap">
+
+            <id property="id" column="id" />
+            <result property="userId" column="user_id" />
+            <result property="amount" column="amount" />
+
+        </resultMap>
+
+        <sql id="userInfo">
+            id,user_id,amount
+        </sql>
+
+    <!---->
+    <resultMap type="com.cdeth.pojo.Bill" id="billMap">
+
+        <id property="id" column="id" />
+        <result property="accountId" column="account_id" />
+        <result property="from" column="from" />
+        <result property="to" column="to" />
+        <result property="amount" column="amount" />
+
+    </resultMap>
+
+
+    <insert id="insertAccount" parameterType="String">
+        INSERT  INTO `eth_account`(`user_id`) VALUES (#{userId});
+    </insert>
+
+    <insert id="insertBill" parameterType="com.cdeth.pojo.Bill">
+        INSERT INTO `eth_bill`(`account_id`,`from`,`to`,`amount`) VALUES (#{accountId},#{from},#{to},#{amount});
+    </insert>
+
+    <update id="update" parameterType="com.cdeth.pojo.Account">
+        UPDATE `eth_account` SET `amount` = #{amount} where `id` = #{id};
+    </update>
+
+    <select id="getAccountById" resultType="com.cdeth.pojo.Account" parameterType="Integer">
+        SELECT
+            <include refid="userInfo"/>
+        FROM `eth_account` WHERE `id` = #{id};
+
+    </select>
+    <select id="getAccountByUserId" resultType="com.cdeth.pojo.Account" resultMap="accountMap">
+
+        SELECT
+        <include refid="userInfo"/>
+        FROM `eth_account` WHERE `user_id` = #{userId};
+
+    </select>
+
+    <select id="billList" resultType="com.cdeth.pojo.Bill" resultMap="billMap">
+
+        SELECT * FROM `eth_bill` WHERE `account_id` = #{accountId};
+
+    </select>
+
+
+</mapper>

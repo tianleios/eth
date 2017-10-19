@@ -17,21 +17,36 @@
     </resultMap>
 
     <sql id="userInfo">
-        id,mobile,password,create_datetime,update_datetime
+        id,mobile,password,eth_password,address,create_datetime,update_datetime
     </sql>
 
     <insert id="insertUser" parameterType="com.cdeth.pojo.User">
 
-        INSERT INTO `eth_user`(mobile,password,address,eth_password,create_datetime,update_datetime) VALUES (
-               #{mobile},#{password},#{address},#{ethPassword},now(),now()
+        INSERT INTO `eth_user`(id,mobile,password,address,eth_password,create_datetime,update_datetime) VALUES (
+           #{id},#{mobile},#{password},#{address},#{ethPassword},now(),now()
         );
     </insert>
+    
+    <select id="getUserByAddress" resultMap="userMap" resultType="com.cdeth.pojo.User">
+        SELECT 
+            <include refid="userInfo"/>
+        FROM `eth_user` WHERE address = #{address}
 
+    </select>
 
+    <select id="getUserByMobile" resultMap="userMap" resultType="com.cdeth.pojo.User">
+        SELECT
+        <include refid="userInfo"/>
+        FROM `eth_user` WHERE address = #{mobile}
 
+    </select>
+    <select id="getUserById" resultType="com.cdeth.pojo.User">
 
+        SELECT
+        <include refid="userInfo"/>
+        FROM `eth_user` WHERE id = #{userId}
 
-
+    </select>
 
 
 </mapper>

@@ -1,8 +1,11 @@
 package com.cdeth.service.impl;
 
 import com.cdeth.common.Response;
+import com.cdeth.pojo.Account;
+import com.cdeth.pojo.User;
 import com.cdeth.service.IEthService;
 import jnr.ffi.Struct;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.web3j.protocol.Web3j;
@@ -27,17 +30,61 @@ import java.util.Map;
 @Service("iEthService")
 public class EthServiceImpl implements IEthService {
 
-    static private Web3j web3j = null;
-    static private Parity parity = null;
+     static  private Web3j web3j = null;
+     static  private Parity parity = null;
 
-    static {
+//     @Autowired
+//     private UserServiceImpl iUserService;
 
-        // parity 应该是一个功能丰富的 web3j
-        web3j = Web3j.build(new HttpService("http://localhost:8545"));
-        parity = Parity.build(new HttpService("http://localhost:8545"));
+     static {
 
-    }
+         web3j = Web3j.build(new HttpService("http://localhost:8545"));
+         parity = Parity.build(new HttpService("http://localhost:8545"));
 
+         //
+//         web3j.pendingTransactionObservable().subscribe( tx -> {
+//             //挂起的交易
+//             System.out.print("交易开始");
+//
+//         });
+
+         //
+//         web3j.transactionObservable().subscribe( tx -> {
+//
+//             //完成的交易，推送到
+//             System.out.print("交易完成");
+//
+//             //1.外部向 我们的用户转账
+//             //2. 我们主动发起的转账
+//             //
+//             String toAddress =  tx.getTo();
+//
+//             User user = null;
+//             try {
+//                 user = this.iUserService.getUserByAddress(toAddress);
+//                 if (user != null) {
+//                     //1.转到主账户
+//                     // 手续费 + 转账金额 = transaction.getValue();
+//                     // 先不考虑手续费
+//                     this.iEthService.tx(user.getAddress(),user.getEthPassword(),this.mainAccountAddress,tx.getValue());
+//
+//                     //2.TODO user虚拟账户 增加余额
+//                     Account userAccount = this.iAccountService.getAccountByUserId(user.getId());
+//                     this.iAccountService.update(userAccount.getId(),tx.getValue());
+//
+//                 }
+//
+//             } catch (Exception e) {
+//
+//                 e.printStackTrace();
+//
+//             }
+//
+//         });
+
+     }
+
+    //
     //
     @Override
     public String reg(String password) throws Exception {
@@ -53,7 +100,9 @@ public class EthServiceImpl implements IEthService {
     public Response tx(String from, String fromPassword, String to, BigInteger amount) throws Exception {
 
         if (from == null || to == null || amount == null) {
-            throw  new Exception("参数不能为空");
+
+            return Response.failure(-1,"参数不能为空");
+
         }
 
         String mineAddress = from;
@@ -93,7 +142,9 @@ public class EthServiceImpl implements IEthService {
 
             //此处应该等到回调
             return Response.failure(ResponseCode.TRANSFER_FAILURE.getCode(),ResponseCode.TRANSFER_FAILURE.getDesc());
+
         }
+
 
         return Response.success("转账成功");
 

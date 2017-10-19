@@ -41,8 +41,6 @@ public class Response<T> implements Serializable {
         return new Response<T>(code,errorMsg,null);
     }
 
-
-
 //    private Response(int code,String msg) {
 //
 //        this.code = code;

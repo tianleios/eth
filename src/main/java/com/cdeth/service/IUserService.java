@@ -11,4 +11,11 @@ public interface IUserService {
     public Response reg(User user) throws Exception;
 //    public Response userInfo(User user) throws Exception;
 
+    public User getUserByAddress(String address) throws  Exception;
+
+    public User getUserByMobile(String mobile) throws  Exception;
+
+    public User getUserById(String userId) throws  Exception;
+
+
 }

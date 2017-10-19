@@ -15,6 +15,14 @@ public interface UserMapper {
 
     int insertUser(User user);
 
+    User getUserByAddress(@Param("address") String address);
+
+    User getUserByMobile(@Param("mobile") String mobile);
+    User getUserById( String userId);
+
+
+
+
 //    int changePwd(@Param("userId") int userId, @Param("password") String password); //修改哪个用户的pwd
 //    User getUserByMobile(String mobile);
 //    List<User> getUsers();
