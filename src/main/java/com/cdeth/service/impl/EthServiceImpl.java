@@ -69,7 +69,6 @@ public class EthServiceImpl implements IEthService {
             return Response.failure(ResponseCode.ACCOUNT_LOCAK.getCode(),ResponseCode.ACCOUNT_LOCAK.getDesc());
         }
 
-
         //获得 nonce
         EthGetTransactionCount transactionCount = web3j.ethGetTransactionCount(mineAddress, DefaultBlockParameterName.LATEST).sendAsync().get();
 
@@ -77,8 +76,9 @@ public class EthServiceImpl implements IEthService {
         BigInteger gasPrice = BigInteger.valueOf(2);
         BigInteger gaslimit = BigInteger.valueOf(30000);
 
-        BigInteger jinLv = new BigInteger("1000000000000000000");
-        BigInteger value = amount.multiply(jinLv);
+//        BigInteger jinLv = new BigInteger("1000000000000000000");
+//        BigInteger value = amount.multiply(jinLv);
+        BigInteger value = amount;
 
         //1.创建交易
         org.web3j.protocol.core.methods.request.Transaction transaction = org.web3j.protocol.core.methods.request.Transaction.createEtherTransaction(mineAddress, nonce, gasPrice, gaslimit, otherAddress, value);

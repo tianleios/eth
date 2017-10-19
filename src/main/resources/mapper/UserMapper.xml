@@ -22,10 +22,9 @@
 
     <insert id="insertUser" parameterType="com.cdeth.pojo.User">
 
-        INSERT INTO `user`(mobile,username,password,create_time,update_time) VALUES (
-               #{phone},#{username},#{password},#{createTime},#{updateTime}
-        )
-        ;
+        INSERT INTO `eth_user`(mobile,password,address,eth_password,create_datetime,update_datetime) VALUES (
+               #{mobile},#{password},#{address},#{ethPassword},now(),now()
+        );
     </insert>
 
 

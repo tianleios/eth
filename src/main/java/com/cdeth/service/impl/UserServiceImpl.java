@@ -8,6 +8,9 @@ import com.cdeth.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by tianlei on 2017/十月/18.
  */
@@ -24,7 +27,9 @@ public class UserServiceImpl implements IUserService {
     @Override
     public Response reg(User user) throws Exception  {
 
-        //begin
+        //TODO
+        //检查手机号是否已经注册
+
         //1.注册以太币地址
         String password = user.getPassword();
         String ethPassword = password + "ethPassword";
@@ -33,9 +38,17 @@ public class UserServiceImpl implements IUserService {
         //2.注册该用户
         user.setEthPassword(ethPassword);
         user.setAddress(address);
-        this.userMapper.insertUser(user);
-        //commit
+        int count =   this.userMapper.insertUser(user);
 
-        return null;
+        //commit
+if (count == 1) {
+       //获得useId
+
+    Map map = new HashMap();
+    map.put("userId","");
+    return Response.success(map);
+} else {
+    return Response.failure(-1,"注册失败");
+}
     }
 }
