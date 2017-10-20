@@ -71,4 +71,11 @@ if (count == 1) {
         return this.userMapper.getUserById(userId);
 
     }
+
+    @Override
+    public User getPlatformUser() throws Exception {
+        return this.getUserById("u000000000000");
+    }
+
+
 }

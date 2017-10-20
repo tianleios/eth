@@ -20,7 +20,7 @@ public interface IAccountService {
     //
     public void insertBill(Bill bill);
 
-    //
+    // add
     public int update(Integer accountId,BigInteger addAmount) throws Exception;
 
     public Account getAccountById(Integer accountId) throws Exception ;
@@ -28,5 +28,9 @@ public interface IAccountService {
 
     //列表查流水
     public List<Bill> billList(Integer accountId);
+
+    public Integer mainAccountId();
+
+
 
 }

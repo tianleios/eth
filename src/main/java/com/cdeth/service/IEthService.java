@@ -19,4 +19,7 @@ public interface IEthService {
     //注册
     public String reg(String password) throws Exception;
 
+//    public String mainAccountAddress();
+//    public String mainAccountEthPassword();
+
 }

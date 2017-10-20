@@ -1,8 +1,12 @@
 package com.cdeth.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * Created by tianlei on 2017/十月/18.
  */
+@JsonIgnoreProperties(value = {"ethPassword"})
+
 public class User {
 
     private String id;

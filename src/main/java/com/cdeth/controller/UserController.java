@@ -2,6 +2,7 @@ package com.cdeth.controller;
 
 import com.cdeth.common.Response;
 import com.cdeth.pojo.Account;
+import com.cdeth.pojo.Bill;
 import com.cdeth.pojo.User;
 import com.cdeth.service.impl.AccountServiceImpl;
 import com.cdeth.service.impl.EthServiceImpl;
@@ -32,7 +33,6 @@ public class UserController {
     AccountServiceImpl iAccountService;
 
 
-
     @ResponseBody
     @PostMapping("/reg")
     public Response balance(String mobile, String password) throws Exception {
@@ -40,12 +40,18 @@ public class UserController {
         if ((mobile == null) || (password == null)) {
             return Response.failure(-10,"参数错误");
         }
+        //2.检查用户是否存在
+        User checkUser = this.iUserService.getUserByMobile(mobile);
+        if (checkUser != null) {
+            return Response.failure(-1,"手机号已经注册");
+        }
 
         //1.注册以太币地址
         String ethPassword = password + "ethPassword";
         String address = iEthService.reg(ethPassword);
 
-        //2.注册用户
+
+        //3.注册用户
         String userId = "u" + Long.toString(new  Date().getTime());
         User user = new User();
         user.setId(userId);
@@ -61,15 +67,19 @@ public class UserController {
     }
 
     @ResponseBody
-    @GetMapping("/login")
-    public Response login(@RequestParam() String mobile,@RequestParam() String password) throws Exception {
+    @PostMapping("/login")
+    public Response login(String mobile, String password) throws Exception {
+
+        if (mobile == null || password == null) {
+            return Response.failure(-1,"参数不能为空");
+        }
 
         User user =  this.iUserService.getUserByMobile(mobile);
         if (user == null) {
             return Response.failure(-1,"用户不存在");
         }
         //
-        if (user.getPassword() != password) {
+        if (!user.getPassword().equals(password)) {
             return Response.failure(-1,"密码错误");
         }
         //
@@ -94,14 +104,27 @@ public class UserController {
 
       //检查余额
       Account account =  this.iAccountService.getAccountByUserId(userId);
-      if (account.getAmount().subtract(amount).compareTo(BigInteger.valueOf(0)) == -1) {
+      if (account.getCalcAmount().subtract(amount).compareTo(BigInteger.valueOf(0)) == -1) {
           return Response.failure(-1,"余额不足");
       }
 
-      String ethPassword = currentUser.getEthPassword();
-      //应该由平台账户转出
+      // 虚拟账户减去
+        BigInteger subAmount = BigInteger.valueOf(-1).multiply(amount);
+      this.iAccountService.update(account.getId(),subAmount);
 
-     return this.iEthService.tx(currentUser.getAddress(),currentUser.getEthPassword(),to,amount);
+      //流水
+//        int a = 10;
+       Bill bill = new Bill();
+       bill.setFrom(currentUser.getAddress());
+       bill.setTo(to);
+       bill.setAccountId(account.getId());
+       bill.setAmount(subAmount.toString());
+       this.iAccountService.insertBill(bill);
+
+       //由平台账户转出
+       User platformUser = this.iUserService.getPlatformUser();
+
+     return this.iEthService.tx(platformUser.getAddress(),platformUser.getEthPassword(),to,amount);
 
 
     }
@@ -130,7 +153,6 @@ public class UserController {
         Account account = this.iAccountService.getAccountByUserId(userId);
 
         return  Response.success(this.iAccountService.billList(account.getId()));
-
 
     }
 

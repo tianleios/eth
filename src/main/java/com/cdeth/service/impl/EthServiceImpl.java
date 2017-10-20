@@ -99,7 +99,7 @@ public class EthServiceImpl implements IEthService {
     @Override
     public Response tx(String from, String fromPassword, String to, BigInteger amount) throws Exception {
 
-        if (from == null || to == null || amount == null) {
+        if (from == null || fromPassword == null || to == null || amount == null) {
 
             return Response.failure(-1,"参数不能为空");
 
@@ -173,4 +173,15 @@ public class EthServiceImpl implements IEthService {
         return Response.success(banlanceMap);
 
     }
+
+//    @Override
+//    public String mainAccountAddress() {
+//        return "";
+//    }
+//
+//    @Override
+//    public String mainAccountEthPassword() {
+//        return null;
+//    }
+
 }

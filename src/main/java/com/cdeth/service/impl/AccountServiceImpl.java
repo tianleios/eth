@@ -29,11 +29,12 @@ public class AccountServiceImpl implements IAccountService {
 
     }
 
+//    addamout > 0, + ||   < 0 -
     @Override
     public int update(Integer accountId, BigInteger addAmount) throws Exception {
 
       Account account =  this.getAccountById(accountId);
-      account.setAmount(account.getAmount().add(addAmount));
+      account.setCalcAmount(account.getCalcAmount().add(addAmount));
       return this.accountMapper.update(account);
 
     }
@@ -65,4 +66,9 @@ public class AccountServiceImpl implements IAccountService {
         return this.accountMapper.billList(accountId);
 
     }
+
+    public Integer mainAccountId() {
+        return 1;
+    }
+
 }

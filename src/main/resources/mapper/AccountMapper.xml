@@ -40,7 +40,7 @@
         UPDATE `eth_account` SET `amount` = #{amount} where `id` = #{id};
     </update>
 
-    <select id="getAccountById" resultType="com.cdeth.pojo.Account" parameterType="Integer">
+    <select id="getAccountById" resultType="com.cdeth.pojo.Account" parameterType="Integer" resultMap="accountMap">
         SELECT
             <include refid="userInfo"/>
         FROM `eth_account` WHERE `id` = #{id};

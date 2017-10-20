@@ -37,16 +37,16 @@
     <select id="getUserByMobile" resultMap="userMap" resultType="com.cdeth.pojo.User">
         SELECT
         <include refid="userInfo"/>
-        FROM `eth_user` WHERE address = #{mobile}
+        FROM `eth_user` WHERE `mobile` = #{mobile}
 
     </select>
-    <select id="getUserById" resultType="com.cdeth.pojo.User">
+
+    <select id="getUserById" resultType="com.cdeth.pojo.User" resultMap="userMap">
 
         SELECT
         <include refid="userInfo"/>
         FROM `eth_user` WHERE id = #{userId}
 
     </select>
-
 
 </mapper>

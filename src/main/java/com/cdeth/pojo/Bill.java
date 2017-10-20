@@ -13,12 +13,15 @@ public class Bill {
     private String from;
     private String to;
     //
-    private BigInteger amount;
+    private String amount;
 
     public Integer getId() {
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Integer getAccountId() {
         return accountId;
@@ -44,18 +47,11 @@ public class Bill {
         this.to = to;
     }
 
-    public BigInteger getAmount() {
+    public String getAmount() {
         return amount;
     }
 
-    public void setAmount(BigInteger amount) {
+    public void setAmount(String amount) {
         this.amount = amount;
     }
-
-    //      `id` integer AUTO_INCREMENT PRIMARY KEY ,
-//  `account_id` integer NOT NULL ,
-//            `from` VARCHAR(30) NOT NULL,
-//  `to` VARCHAR(30) NOT NULL,
-//  `amount` BIGINT NOT NULL DEFAULT 0
-
 }

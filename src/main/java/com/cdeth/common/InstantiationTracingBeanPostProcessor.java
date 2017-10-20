@@ -86,7 +86,7 @@ public class InstantiationTracingBeanPostProcessor implements ApplicationListene
                         //3.流水
                         Bill bill = new Bill();
                         bill.setAccountId(userAccount.getId());
-                        bill.setAmount(value);
+                        bill.setAmount(value.toString());
                         bill.setFrom(tx.getFrom());
                         bill.setTo(tx.getTo());
                         this.iAccountService.insertBill(bill);
