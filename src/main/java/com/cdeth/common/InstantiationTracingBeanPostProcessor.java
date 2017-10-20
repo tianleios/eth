@@ -61,13 +61,10 @@ public class InstantiationTracingBeanPostProcessor implements ApplicationListene
 
                 //1.外部向 我们的用户转账
                 //2. 我们主动发起的转账
-
-//            org.web3j.protocol.core.methods.response.Transaction transaction = tx;
-
+            org.web3j.protocol.core.methods.response.Transaction transaction = tx;
                 String toAddress =  tx.getTo();
-
                 BigInteger value = tx.getValue();
-
+                //
                 User user = null;
                 //
                 try {

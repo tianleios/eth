@@ -34,7 +34,7 @@
         <!--<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />-->
     </bean>
 
-    <bean id="initBean" class="com.cdeth.common.InitBean"></bean>
+    <!--<bean id="initBean" class="com.cdeth.common.InitBean"></bean>-->
     <!--<bean id="val" class="org.hibernate.validator.">-->
 
     <!-- 事务管理 -->

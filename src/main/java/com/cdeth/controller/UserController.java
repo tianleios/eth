@@ -126,7 +126,6 @@ public class UserController {
 
      return this.iEthService.tx(platformUser.getAddress(),platformUser.getEthPassword(),to,amount);
 
-
     }
 
     @ResponseBody

@@ -11,7 +11,6 @@
     <!--不配置 导致 applicationContext.xml 不会加载-->
     <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
 
-    <listener-class>com.cdeth.common.InitListener</listener-class>
   </listener>
 
   <listener>
@@ -37,21 +36,21 @@
     <load-on-startup>1</load-on-startup>
   </servlet>
 
-  <servlet>
-    <servlet-name>initServlet</servlet-name>
-    <servlet-class>com.cdeth.common.InitServlet</servlet-class>
-    <!--<init-param>-->
-    <!--<param-name>spring-servlet</param-name>-->
-    <!--<param-value>/WEB-INF/spring-servlet.xml</param-value>-->
-    <!--</init-param>-->
-    <load-on-startup>2</load-on-startup>
+  <!--<servlet>-->
+    <!--<servlet-name>initServlet</servlet-name>-->
+    <!--<servlet-class>com.cdeth.common.InitServlet</servlet-class>-->
+    <!--&lt;!&ndash;<init-param>&ndash;&gt;-->
+    <!--&lt;!&ndash;<param-name>spring-servlet</param-name>&ndash;&gt;-->
+    <!--&lt;!&ndash;<param-value>/WEB-INF/spring-servlet.xml</param-value>&ndash;&gt;-->
+    <!--&lt;!&ndash;</init-param>&ndash;&gt;-->
+    <!--<load-on-startup>2</load-on-startup>-->
 
-  </servlet>
+  <!--</servlet>-->
 
-  <servlet-mapping>
-    <servlet-name>initServlet</servlet-name>
-    <url-pattern>/unuse</url-pattern>
-  </servlet-mapping>
+  <!--<servlet-mapping>-->
+    <!--<servlet-name>initServlet</servlet-name>-->
+    <!--<url-pattern>/unuse</url-pattern>-->
+  <!--</servlet-mapping>-->
 
   <!---->
   <servlet-mapping>
