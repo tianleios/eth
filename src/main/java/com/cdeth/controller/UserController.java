@@ -98,35 +98,81 @@ public class UserController {
 
     @ResponseBody
     @PostMapping("/tx")
-    public Response tx(String userId, String to, BigInteger amount) throws Exception {
+    public Response tx(String userId, String toMobile, BigInteger amount) throws Exception {
 
-      User currentUser =  this.iUserService.getUserById(userId);
+        User toUser = this.iUserService.getUserByMobile(toMobile);
+        User fromUser = this.iUserService.getUserById(userId);
 
-      //检查余额
-      Account account =  this.iAccountService.getAccountByUserId(userId);
-      if (account.getCalcAmount().subtract(amount).compareTo(BigInteger.valueOf(0)) == -1) {
-          return Response.failure(-1,"余额不足");
-      }
+        if (toUser == null) {
+            return Response.failure(-1,"手机号不是该平台用户");
+        }
 
-      // 虚拟账户减去
+        //
+        Account fromAccount =  this.iAccountService.getAccountByUserId(userId);
+        if (fromAccount.getCalcAmount().subtract(amount).compareTo(BigInteger.valueOf(0)) == -1) {
+            return Response.failure(-1,"余额不足");
+        }
+
+        // 虚拟账户减去
         BigInteger subAmount = BigInteger.valueOf(-1).multiply(amount);
-      this.iAccountService.update(account.getId(),subAmount);
+        this.iAccountService.update(fromAccount.getId(),subAmount);
+        Bill bill = new Bill();
+        bill.setFrom(fromUser.getAddress());
+        bill.setTo(toUser.getAddress());
+        bill.setAccountId(fromAccount.getId());
+        bill.setAmount(subAmount.toString());
+        this.iAccountService.insertBill(bill);
 
-      //流水
-//        int a = 10;
-       Bill bill = new Bill();
-       bill.setFrom(currentUser.getAddress());
-       bill.setTo(to);
-       bill.setAccountId(account.getId());
-       bill.setAmount(subAmount.toString());
-       this.iAccountService.insertBill(bill);
+        // 虚拟账户增加
+        Account toAccount = this.iAccountService.getAccountByUserId(toUser.getId());
+        this.iAccountService.update(toAccount.getId(),amount);
+        Bill toBill = new Bill();
+        toBill.setFrom(fromUser.getAddress());
+        toBill.setTo(toUser.getAddress());
+        toBill.setAccountId(toAccount.getId());
+        toBill.setAmount(amount.toString());
+        this.iAccountService.insertBill(toBill);
 
-       //由平台账户转出
-       User platformUser = this.iUserService.getPlatformUser();
-
-     return this.iEthService.tx(platformUser.getAddress(),platformUser.getEthPassword(),to,amount);
+        return Response.failure(0,"转账成功");
 
     }
+
+    @ResponseBody
+    @PostMapping("/withdraw")
+    public Response withdraw(String userId, String toAddress, BigInteger amount) throws Exception {
+
+        if (userId == null || toAddress == null || amount == null) {
+            return Response.failure(-1,"参数不正确");
+        }
+
+        User currentUser =  this.iUserService.getUserById(userId);
+
+        //检查余额
+        Account account =  this.iAccountService.getAccountByUserId(userId);
+        if (account.getCalcAmount().subtract(amount).compareTo(BigInteger.valueOf(0)) == -1) {
+            return Response.failure(-1,"余额不足");
+        }
+
+        // 虚拟账户减去
+        BigInteger subAmount = BigInteger.valueOf(-1).multiply(amount);
+        this.iAccountService.update(account.getId(),subAmount);
+
+
+        //流水
+//        int a = 10;
+        Bill bill = new Bill();
+        bill.setFrom(currentUser.getAddress());
+        bill.setTo(toAddress);
+        bill.setAccountId(account.getId());
+        bill.setAmount(subAmount.toString());
+        this.iAccountService.insertBill(bill);
+
+        //由平台账户转出
+        User platformUser = this.iUserService.getPlatformUser();
+        return this.iEthService.tx(platformUser.getAddress(),platformUser.getEthPassword(),toAddress,amount);
+
+    }
+
 
     @ResponseBody
     @GetMapping("/account/{userId}")
