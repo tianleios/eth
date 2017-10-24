@@ -56,7 +56,7 @@
 
     <select id="billList" resultType="com.cdeth.pojo.Bill" resultMap="billMap">
 
-        SELECT * FROM `eth_bill` WHERE `account_id` = #{accountId};
+        SELECT * FROM `eth_bill` WHERE `account_id` = #{accountId} order by `id` desc;
 
     </select>
 

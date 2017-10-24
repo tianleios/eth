@@ -117,8 +117,8 @@ public class UserController {
         BigInteger subAmount = BigInteger.valueOf(-1).multiply(amount);
         this.iAccountService.update(fromAccount.getId(),subAmount);
         Bill bill = new Bill();
-        bill.setFrom(fromUser.getAddress());
-        bill.setTo(toUser.getAddress());
+        bill.setFrom(fromUser.getMobile());
+        bill.setTo(toUser.getMobile());
         bill.setAccountId(fromAccount.getId());
         bill.setAmount(subAmount.toString());
         this.iAccountService.insertBill(bill);
@@ -126,9 +126,11 @@ public class UserController {
         // 虚拟账户增加
         Account toAccount = this.iAccountService.getAccountByUserId(toUser.getId());
         this.iAccountService.update(toAccount.getId(),amount);
+        //
         Bill toBill = new Bill();
-        toBill.setFrom(fromUser.getAddress());
-        toBill.setTo(toUser.getAddress());
+        toBill.setFrom(fromUser.getMobile());
+        toBill.setTo(toUser.getMobile());
+        //
         toBill.setAccountId(toAccount.getId());
         toBill.setAmount(amount.toString());
         this.iAccountService.insertBill(toBill);

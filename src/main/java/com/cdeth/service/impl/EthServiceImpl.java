@@ -11,10 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.Request;
-import org.web3j.protocol.core.methods.response.EthGetBalance;
-import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
-import org.web3j.protocol.core.methods.response.EthSendTransaction;
-import org.web3j.protocol.core.methods.response.Web3ClientVersion;
+import org.web3j.protocol.core.methods.response.*;
 import org.web3j.protocol.http.HttpService;
 import com.cdeth.common.*;
 import org.web3j.protocol.parity.Parity;
@@ -38,8 +35,11 @@ public class EthServiceImpl implements IEthService {
 
      static {
 
-         web3j = Web3j.build(new HttpService("http://localhost:8545"));
-         parity = Parity.build(new HttpService("http://localhost:8545"));
+         String url =   EthManager.url;
+
+
+         web3j = Web3j.build(new HttpService(url));
+         parity = Parity.build(new HttpService(url));
 
          //
 //         web3j.pendingTransactionObservable().subscribe( tx -> {
@@ -111,9 +111,13 @@ public class EthServiceImpl implements IEthService {
         //
         String mineAddressPasssword = fromPassword;
         Parity parity = Parity.build(new HttpService());
-        PersonalUnlockAccount personalUnlockAccount = parity.personalUnlockAccount(mineAddress, mineAddressPasssword).sendAsync().get();
+        PersonalUnlockAccount personalUnlockAccountResp = parity.personalUnlockAccount(mineAddress, mineAddressPasssword).sendAsync().get();
+
+        if (personalUnlockAccountResp.getError() != null) {
+            return Response.failure(-300,personalUnlockAccountResp.getError().getMessage());
+        }
         //
-        if (!personalUnlockAccount.accountUnlocked()) {
+        if (!personalUnlockAccountResp.accountUnlocked()) {
             //账户处于锁定状态
             return Response.failure(ResponseCode.ACCOUNT_LOCAK.getCode(),ResponseCode.ACCOUNT_LOCAK.getDesc());
         }
@@ -122,32 +126,44 @@ public class EthServiceImpl implements IEthService {
         EthGetTransactionCount transactionCount = web3j.ethGetTransactionCount(mineAddress, DefaultBlockParameterName.LATEST).sendAsync().get();
 
         BigInteger nonce = transactionCount.getTransactionCount();
-        BigInteger gasPrice = BigInteger.valueOf(2);
-        BigInteger gaslimit = BigInteger.valueOf(30000);
 
-//        BigInteger jinLv = new BigInteger("1000000000000000000");
-//        BigInteger value = amount.multiply(jinLv);
+        //指定交易的gasPrice, 如果 null ，会获取 链上的 gasPrice, 可以为任意值
+        BigInteger gasPrice = BigInteger.valueOf(0);
+        BigInteger gaslimit = BigInteger.valueOf(30000);
+//        BigInteger gasPrice = null;
+//        BigInteger gaslimit = null;
+
+
+
         BigInteger value = amount;
 
         //1.创建交易
         org.web3j.protocol.core.methods.request.Transaction transaction = org.web3j.protocol.core.methods.request.Transaction.createEtherTransaction(mineAddress, nonce, gasPrice, gaslimit, otherAddress, value);
 
+        //2.预估手续费
+      EthEstimateGas ethEstimateGas = web3j.ethEstimateGas(transaction).send();
+
+
         //2.发起交易
         EthSendTransaction ethSendTransactionResp = parity.ethSendTransaction(transaction).sendAsync().get();
 
+        if (ethSendTransactionResp.getError() != null) {
+
+            return Response.failure(-300,ethSendTransactionResp.getError().getMessage());
+
+        }
         //结果哈希
         String transactionHash = ethSendTransactionResp.getTransactionHash();
 
         if (transactionHash == null || transactionHash.isEmpty()) {
 
+            //交易先被pending，交易应该有  -- 待确认，已确认（真正成功）
             //此处应该等到回调
             return Response.failure(ResponseCode.TRANSFER_FAILURE.getCode(),ResponseCode.TRANSFER_FAILURE.getDesc());
 
         }
 
-
         return Response.success("转账成功");
-
     }
 
     //

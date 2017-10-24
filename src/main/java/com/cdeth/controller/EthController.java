@@ -25,13 +25,13 @@ public class EthController {
 
     }
 
-//    @ResponseBody
-//    @PostMapping("/tx")
-//    public Response tx(String from, String  to, BigInteger amount) throws Exception {
-//
-//        return  this.iEthService.tx(from,password,to,amount);
-//
-//    }
+    @ResponseBody
+    @PostMapping("/tx")
+    public Response tx(String from,String fromPassword, String  to, BigInteger amount) throws Exception {
+int a = 10;
+        return  this.iEthService.tx(from,fromPassword,to,amount);
+
+    }
 
 
 

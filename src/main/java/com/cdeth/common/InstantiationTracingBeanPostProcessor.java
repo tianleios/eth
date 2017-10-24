@@ -37,11 +37,14 @@ public class InstantiationTracingBeanPostProcessor implements ApplicationListene
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
 
-        this.mainAccountAddress = "0x53663d7126cfDaE77165aD3Edaf7E680814b2AEc";
+//        this.mainAccountAddress = "0x53663d7126cfDaE77165aD3Edaf7E680814b2AEc";
 
         //
-        web3j = Web3j.build(new HttpService("http://localhost:8545"));
-        parity = Parity.build(new HttpService("http://localhost:8545"));
+//        String url = "http://116.62.6.195:8080/eth";
+          String url = EthManager.url;
+//        String url = "http://localhost:8080";
+        web3j = Web3j.build(new HttpService(url));
+        parity = Parity.build(new HttpService(url));
 
         //
         if(event.getApplicationContext().getParent() == null){
@@ -54,7 +57,7 @@ public class InstantiationTracingBeanPostProcessor implements ApplicationListene
             });
 
             //
-            web3j.transactionObservable().subscribe( tx -> {
+            web3j.transactionObservable().subscribe( ( tx) -> {
 
                 //完成的交易，推送到
                 System.out.print("交易完成");
@@ -62,7 +65,7 @@ public class InstantiationTracingBeanPostProcessor implements ApplicationListene
                 //1.外部向 我们的用户转账
                 //2. 我们主动发起的转账
             org.web3j.protocol.core.methods.response.Transaction transaction = tx;
-                String toAddress =  tx.getTo();
+                String toAddress = tx.getTo();
                 BigInteger value = tx.getValue();
                 //
                 User user = null;
@@ -80,12 +83,12 @@ public class InstantiationTracingBeanPostProcessor implements ApplicationListene
 
                         this.iAccountService.update(userAccount.getId(),value);
 
-                        //3.流水
+                        //3.增加流水
                         Bill bill = new Bill();
                         bill.setAccountId(userAccount.getId());
                         bill.setAmount(value.toString());
                         bill.setFrom(tx.getFrom());
-                        bill.setTo(tx.getTo());
+                        bill.setTo(user.getMobile());
                         this.iAccountService.insertBill(bill);
                         //
 

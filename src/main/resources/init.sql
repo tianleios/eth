@@ -34,4 +34,6 @@ CREATE table IF NOT EXISTS `eth_bill`(
 ) AUTO_INCREMENT=1000;
 
 
-INSERT INTO eth_user(`id`,`mobile`,`address`,`password`,`eth_password`,`create_datetime`,`update_datetime`) VALUES ('u000000000000','00000000000','0x53663d7126cfDaE77165aD3Edaf7E680814b2AEc','password','q4121585',now(),now());
+INSERT INTO eth_user(`id`,`mobile`,`address`,`password`,`eth_password`,`create_datetime`,`update_datetime`) VALUES ('u000000000000','00000000000','0xb1cd852c72141bdac6ccf314d9ea82d2af03f2ac','password','123456',now(),now());
+
+INSERT INTO eth_account(`id`,`user_id`,`amount`) VALUES ('3000','u000000000000',0);

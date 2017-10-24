@@ -31,6 +31,4 @@ public interface IAccountService {
 
     public Integer mainAccountId();
 
-
-
 }

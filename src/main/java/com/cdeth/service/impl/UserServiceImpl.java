@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.jws.soap.SOAPBinding;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Observable;
 
 /**
  * Created by tianlei on 2017/十月/18.
@@ -77,5 +78,15 @@ if (count == 1) {
         return this.getUserById("u000000000000");
     }
 
+    private rx.Observable observableTest() {
+        return rx.Observable.create(subscriber -> {
+
+            subscriber.onNext("");
+
+//            subscriber.onError();
+
+            subscriber.onCompleted();
+        });
+    }
 
 }
