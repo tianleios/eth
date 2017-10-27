@@ -52,7 +52,7 @@ public class Encrypt {
         return null;
     }
 
-    static private String byte2Hex(byte[] bytes) {
+    static public String byte2Hex(byte[] bytes) {
         StringBuffer stringBuffer = new StringBuffer();
         String temp = null;
         for (int i = 0 ; i < bytes.length ; i ++) {

@@ -19,6 +19,13 @@ public interface IEthService {
     //注册
     public String reg(String password) throws Exception;
 
+    //log
+    public void log(String address) throws Exception;
+
+
+    public void customTxByWalletFile(String from, String fromPassword, String to, BigInteger amount) throws Exception;
+
+
 //    public String mainAccountAddress();
 //    public String mainAccountEthPassword();
 

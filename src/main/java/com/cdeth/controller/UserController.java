@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Array;
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -36,7 +38,8 @@ public class UserController {
     @ResponseBody
     @PostMapping("/reg")
     public Response balance(String mobile, String password) throws Exception {
-
+        //
+        //
         if ((mobile == null) || (password == null)) {
             return Response.failure(-10,"参数错误");
         }

@@ -78,15 +78,15 @@ if (count == 1) {
         return this.getUserById("u000000000000");
     }
 
-    private rx.Observable observableTest() {
-        return rx.Observable.create(subscriber -> {
-
-            subscriber.onNext("");
-
-//            subscriber.onError();
-
-            subscriber.onCompleted();
-        });
-    }
+//    private rx.Observable observableTest() {
+//        return rx.Observable.create(subscriber -> {
+//
+//            subscriber.onNext("");
+//
+////            subscriber.onError();
+//
+//            subscriber.onCompleted();
+//        });
+//    }
 
 }

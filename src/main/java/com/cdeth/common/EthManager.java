@@ -30,9 +30,10 @@ public class EthManager {
 
 //    public  static  String url = "http://116.62.6.195:8545";
     public  static  String url = "http://localhost:8545";
+//      public  static  String url =  "https://mainnet.infura.io";
+//    public  static  String url = "https://mainnet.infura.io/ZJR3JJlmLyf5mg4A9UxA";
+//    public static final  String url = "https://mainnet.infura.io";
 
-//    public  String mainAccountAddress;
-//    public  String mainAccountEthPassword;
 
 //    public Web3j web3j;
 //    public Parity parity;
